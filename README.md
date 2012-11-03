@@ -1,0 +1,2 @@
+sorl-defined-thumbnails
+=======================
