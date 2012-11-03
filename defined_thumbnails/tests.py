@@ -22,6 +22,9 @@ class TestHelpers(TestCase):
     def test_convert_to_geometry(self):
         pass
 
+    def test_use_strict(self):
+        pass
+
 
 class TestTemplateTag(TestCase):
     def test_init(self):

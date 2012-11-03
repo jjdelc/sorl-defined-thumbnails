@@ -16,7 +16,9 @@ def is_valid_geometry(geom):
     """
     named_sizes = get_named_sizes()
     defined_sizes = get_defined_sizes()
-    return geom in named_sizes + defined_sizes
+    if use_strict():
+        return geom in named_sizes + defined_sizes
+    return geom
 
 
 def get_named_sizes():
@@ -35,5 +37,5 @@ def convert_to_geometry(geom):
 
     return get_named_sizes()[geom]
 
-
-
+def use_strict():
+    return getattr(settings, 'SORL_DEFINED_STRICT', False)
