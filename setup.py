@@ -21,7 +21,12 @@ setup(
     author_email='jjdelc@gmail.com',
     license='BSD License',
     py_modules=['defined_thumbnails'],
-    packages=['defined_thumbnails', 'defined_thumbnails.templatetags'],
+    packages=[
+        'defined_thumbnails',
+        'defined_thumbnails.templatetags',
+        'defined_thumbnails.management',
+        'defined_thumbnails.management.commands',
+    ],
     description='A sorl-thumbnail extension to restrict the thumbnail'
         'generation to a pre defined set of values',
     long_description=long_desc,
