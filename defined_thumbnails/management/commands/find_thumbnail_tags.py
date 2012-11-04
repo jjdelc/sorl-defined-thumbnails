@@ -57,7 +57,7 @@ def thumbnail_lines():
 
 
 def convert_to_txt(tline):
-    return u'%s:%s - %s' % (tline['file'], tline['number'], tline['line'])
+    return u'%s:%s\n\t%s' % (tline['file'], tline['number'], tline['line'])
 
 
 class Command(BaseCommand):

@@ -50,3 +50,13 @@ Migration
 
 By default, the new template tag will allow you to continue using old geometries not defined in `SORL_DEFINED_THUMBNAILS`.
 If you want to raise errors with this, set `SORL_DEFINED_STRICT` to `True`.
+
+
+Finding all templates to convert
+--------------------------------
+
+This app comes with a management command that will look in all app dirs and template dirs for matches of the thumbnail tag.
+
+    ./manage.py find_thumbnail_tags
+
+It will print all usages of the `{% thumbnail %}` tag in your templates
