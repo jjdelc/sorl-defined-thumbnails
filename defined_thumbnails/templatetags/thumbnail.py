@@ -24,8 +24,8 @@ class DefinedThumbnailNode(ThumbnailNode):
             self.geometry = parser.compile_filter(geom_str)
             self.options = [(k, parser.compile_filter(v)) for k, v in geom_opts]
         else:
+            logger.warning(u'Invalid geometry: %s' % self.geometry)
             if USE_STRICT:
-                logger.warning(u'Invalid geometry: %s' % self.geometry)
                 raise TemplateSyntaxError(
                     u'Invalid thumbnail size %s' % self.geometry)
 
