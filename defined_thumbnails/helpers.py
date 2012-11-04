@@ -34,20 +34,38 @@ def size_to_str(size_tup):
 
 def get_defined_sizes():
     defined_sizes = settings.SORL_DEFINED_THUMBNAILS
-    return [size_to_str(v['size']) for v in defined_sizes.values())
+    return [size_to_str(v['size']) for v in defined_sizes.values()]
 
 
 def get_thumb_data(geom):
     return settings.SORL_DEFINED_THUMBNAILS[clean_geom(geom)]
 
 
-def convert_to_geometry(geom):
-    if clean_geom(geom) in get_defined_sizes():
-        return geom
+def get_thumb_name_from_size_str(geom):
+    for tname, tdata in settings.SORL_DEFINED_THUMBNAILS.items():
+        if tdata['size'] == geom:
+            return tname
 
+
+def get_geom_name(geom):
+    cgeom = clean_geom(geom)
+    if cgeom in get_defined_sizes():
+        name = get_thumb_name_from_size_str(cgeom)
+    else:
+        name = cgeom
+    return name
+
+
+def get_geom_string(geom):
     thumb = get_thumb_data(geom)
     return '"%s"' % size_to_str(thumb['size'])
 
 
+def get_geom_opts(geom):
+    thumb = get_thumb_data(geom)
+    return [(k, '"%s"' % v) for k, v in thumb['options'].items()]
+
+
 def use_strict():
     return getattr(settings, 'SORL_DEFINED_STRICT', False)
+

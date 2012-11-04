@@ -5,19 +5,27 @@ This is a plugin over standard sorl-thumbnails that constrains your thumbnail cr
 
 Define your thumbnail sizes in your settings:
 
-
     SORL_DEFINED_THUMBNAILS = {
-        'small': '50x50'
-        'medium': '250x250'
-        'large': '800x800'
+        'small_cropped': {
+            'size': (50, 50),
+            'options': {
+                'crop': 'center'
+            }
+        },
+        'small': {
+            'size': (50, 50),
+        },
+        'medium': {
+            'size': (350, 350),
+        },
     }
 
 
-Add to your `INSTALLED_APPS` **AFTER** `sorl.thumbnail`
+Add to your `INSTALLED_APPS` **before** `sorl.thumbnail`
 
     INSTALLED_APPS = (
-        'sorl.thumbnail',
         'defined_thumbnails',
+        'sorl.thumbnail',
     )
 
 This is important so the `{% thumbnail %}` template tag gets overriden by the new one.
@@ -28,10 +36,12 @@ Usage
 In your templates now do:
 
     {% load thumbnail %}
+
     {% block content %}
-    {% thumbnail medium as thumb %}
-    <img src="{{thumb.url}}"/>
+        {% thumbnail object.pic_field "medium" as thumb %}
+        <img src="{{thumb.url}}"/>
     {% endthumbnail %}
+
     {% endblock %}
 
 
