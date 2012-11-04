@@ -10,15 +10,17 @@ def is_enabled():
     return hasattr(settings, 'SORL_DEFINED_THUMBNAILS')
 
 
+def clean_geom(geom):
+    return str(geom).strip('"').lower()
+
+
 def is_valid_geometry(geom):
     """
     A geometry is valid if it fits within the pre defined thumbnail sizes.
     """
     named_sizes = get_named_sizes()
     defined_sizes = get_defined_sizes()
-    if use_strict():
-        return geom in named_sizes + defined_sizes
-    return geom
+    return clean_geom(geom) in named_sizes + defined_sizes
 
 
 def get_named_sizes():
@@ -32,10 +34,10 @@ def get_defined_sizes():
 
 
 def convert_to_geometry(geom):
-    if geom in get_defined_sizes():
+    if str(geom) in get_defined_sizes():
         return geom
 
-    return get_named_sizes()[geom]
+    return '"%s"' % settings.SORL_DEFINED_THUMBNAILS[clean_geom(geom)]
 
 def use_strict():
     return getattr(settings, 'SORL_DEFINED_STRICT', False)
