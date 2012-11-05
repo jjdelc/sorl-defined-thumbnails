@@ -23,6 +23,18 @@ def is_valid_geometry(geom):
     return clean_geom(geom) in named_sizes + defined_sizes
 
 
+def is_valid_opts(opts):
+    if len(opts) != len(settings.SORL_DEFINED_THUMBNAILS):
+        return False
+
+    # TODO: Make sure all opts match
+    return True
+
+
+def is_valid_geometry_and_opts(geom, opts):
+    return is_valid_geometry(geom) and is_valid_opts(opts)
+
+
 def get_named_sizes():
     defined_sizes = settings.SORL_DEFINED_THUMBNAILS
     return defined_sizes.keys()

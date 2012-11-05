@@ -16,7 +16,7 @@ class DefinedThumbnailNode(ThumbnailNode):
 
     def __init__(self, parser, token):
         super(DefinedThumbnailNode, self).__init__(parser, token)
-        if helpers.is_valid_geometry(self.geometry):
+        if helpers.is_valid_geometry_and_opts(self.geometry, self.options):
             geom_name = helpers.get_geom_name(self.geometry)
             geom_str = helpers.get_geom_string(geom_name)
             geom_opts = helpers.get_geom_opts(geom_name)
