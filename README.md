@@ -18,6 +18,12 @@ Define your thumbnail sizes in your settings:
         'medium': {
             'size': (350, 350),
         },
+        'medium_cropped': {
+            'size': (350, 350),
+            'options': {
+                'crop': 'center'
+            }
+        },
     }
 
 
@@ -33,6 +39,8 @@ This is important so the `{% thumbnail %}` template tag gets overriden by the ne
 Usage
 -----
 
+This app provides two template tags `{% dthumbnail %}` and overrides the standard `{% thumbnail %}` so it now takes the named thumbnails instead of arbitrary arguments.
+
 In your templates now do:
 
     {% load thumbnail %}
@@ -44,6 +52,15 @@ In your templates now do:
 
     {% endblock %}
 
+You can also keep using the standard syntax:
+
+    {% thumbnail object.pic_field "350x350" crop="center "as thumb %}
+
+as long as the parameters entered match any of the defined sizes.
+
+When using strict mode the template tags will raise a syntax error if the parameters don't match the named thumbnails, otherwise they will only get logged.
+
+Alternatively you can use the `{% dthumbnail %}` tag which works like the overriden `{% thumbnail %}` tag but will always be strict. This tag also takes `{% empty %}` and closes with `{% endthumbnail %}`.
 
 Migration
 ---------
