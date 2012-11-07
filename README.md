@@ -68,12 +68,29 @@ Migration
 By default, the new template tag will allow you to continue using old geometries not defined in `SORL_DEFINED_THUMBNAILS`.
 If you want to raise errors with this, set `SORL_DEFINED_STRICT` to `True`.
 
+Finding all template occurences
+-------------------------------
+
+    ./manage.py thumbnail_tags find_bad
+
+Will show all the occurences of the `{% thumbnail %}` tag in your templates.
+
 
 Finding all templates to convert
 --------------------------------
 
 This app comes with a management command that will look in all app dirs and template dirs for matches of the thumbnail tag.
 
-    ./manage.py find_thumbnail_tags
+    ./manage.py thumbnail_tags find_bad
 
 It will print all usages of the `{% thumbnail %}` tag in your templates
+
+
+Suggest which sizes to define
+-----------------------------
+
+    ./manage.py thumbnail_tags suggest_sizes
+
+Will run a tally of all the `{% thumbnail %}` tags found in your templates and show you the occurences for each combination of geometry/options.
+
+This should help you find which sizes to create in order to make the least changes in your templates.
