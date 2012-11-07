@@ -27,8 +27,21 @@ def is_valid_opts(opts):
     if len(opts) != len(settings.SORL_DEFINED_THUMBNAILS):
         return False
 
-    # TODO: Make sure all opts match
-    return True
+    return options_match_any(opts)
+
+
+def options_match_any(opts):
+    for settings_opt in settings.SORL_DEFINED_THUMBNAILS.values():
+        if options_match(clean_opts(opts), settings_opt['options']):
+            return True
+    return False
+
+
+def options_match(opts_1, opts_2):
+    return opts_1 == opts_2
+
+def clean_opts(opts):
+    return dict([(k, str(v).strip('"')) for k, v in opts])
 
 
 def is_valid_geometry_and_opts(geom, opts):
@@ -55,7 +68,7 @@ def get_thumb_data(geom):
 
 def get_thumb_name_from_size_str(geom):
     for tname, tdata in settings.SORL_DEFINED_THUMBNAILS.items():
-        if tdata['size'] == geom:
+        if size_to_str(tdata['size']) == geom:
             return tname
 
 
@@ -81,3 +94,11 @@ def get_geom_opts(geom):
 def use_strict():
     return getattr(settings, 'SORL_DEFINED_STRICT', False)
 
+
+def get_invalid_msg(geom, opts):
+    opts_str = opts_to_str(opts)
+    return u'Thumbnail params don\'t match any defined size: %s %s' % (geom,
+        opts_str)
+
+def opts_to_str(opts):
+    return ' '.join(['%s=%s' % (k, str(v)) for k, v in opts])

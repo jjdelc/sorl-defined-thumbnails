@@ -24,10 +24,10 @@ class DefinedThumbnailNode(ThumbnailNode):
             self.geometry = parser.compile_filter(geom_str)
             self.options = [(k, parser.compile_filter(v)) for k, v in geom_opts]
         else:
-            logger.warning(u'Invalid geometry: %s' % self.geometry)
+            msg = helpers.get_invalid_msg(self.geometry, self.options)
+            logger.warning(msg)
             if use_strict:
-                raise TemplateSyntaxError(
-                    u'Invalid thumbnail size %s' % self.geometry)
+                raise TemplateSyntaxError(msg)
 
 
 @register.tag
@@ -37,6 +37,6 @@ def thumbnail(parser, token):
     return ThumbnailNode(parser, token)
 
 
-@register.rat
+@register.tag
 def dthumbnail(parser, token):
     return DefinedThumbnailNode(parser, token, use_strict=True)
