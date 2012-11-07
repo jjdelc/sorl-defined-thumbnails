@@ -2,6 +2,7 @@
 
 import os
 import re
+from collections import defaultdict
 
 from django.conf import settings
 from django.template.loaders import app_directories
@@ -106,6 +107,7 @@ def opts_from_tag(tag_string):
         val = match.group('value')
         opts.append((key, val))
 
+    opts.sort(key=lambda x: x[0]) # Make sure they are always in the same order
     return opts
 
 
@@ -118,13 +120,29 @@ def find_bad():
     return out
 
 
+def suggested_sizes():
+    tally = defaultdict(int)
+    for template_line in thumbnail_lines():
+        for tag in extract_present_tags(template_line):
+            normal_tag = normalize_tag(tag)
+            tally[normal_tag] += 1
+    return tally
+
+
+def normalize_tag(tag):
+    return u'{%% thumbnail img %s %%}' % ' '.join(tag_chunks(tag))
+
+
 class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         if not args:
             return self.bad_command()
 
         command = args[0]
-        if command == 'list':
+
+        if command == 'suggest_sizes':
+            return self.suggest_sizes()
+        elif command == 'list':
             out = find_all()
         elif command == 'find_bad':
             out = find_bad()
@@ -138,3 +156,11 @@ class Command(BaseCommand):
 
     def bad_command(self):
         raise CommandError('Invalid command')
+
+    def suggest_sizes(self):
+        out = []
+        for tag, count in suggested_sizes().items():
+            out.append((count, tag))
+
+        out.sort(key=lambda x: x[0])
+        print '\n'.join('%3d: %s' % (count, tag) for count, tag in out)
