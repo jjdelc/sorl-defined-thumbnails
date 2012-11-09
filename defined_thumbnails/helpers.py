@@ -24,15 +24,8 @@ def is_valid_geometry(geom):
 
 
 def is_valid_opts(opts):
-    if len(opts) != len(settings.SORL_DEFINED_THUMBNAILS):
-        return False
-
-    return options_match_any(opts)
-
-
-def options_match_any(opts):
     for settings_opt in settings.SORL_DEFINED_THUMBNAILS.values():
-        if options_match(clean_opts(opts), settings_opt['options']):
+        if options_match(clean_opts(opts), settings_opt.get('options', {})):
             return True
     return False
 
@@ -88,7 +81,7 @@ def get_geom_string(geom):
 
 def get_geom_opts(geom):
     thumb = get_thumb_data(geom)
-    return [(k, '"%s"' % v) for k, v in thumb['options'].items()]
+    return [(k, '"%s"' % v) for k, v in thumb.get('options', {}).items()]
 
 
 def use_strict():
