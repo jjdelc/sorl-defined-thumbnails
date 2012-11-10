@@ -2,7 +2,9 @@
 
 from django.template import Library
 
-from sorl.thumbnail.templatetags.thumbnail import ThumbnailNode, logger, TemplateSyntaxError
+from sorl.thumbnail.templatetags.thumbnail import ThumbnailNode, logger, TemplateSyntaxError, safe_filter
+from sorl.thumbnail.templatetags.thumbnail import margin as sorl_margin
+from sorl.thumbnail.templatetags.thumbnail import is_portrait as sorl_is_portrait
 
 from defined_thumbnails import helpers
 
@@ -40,3 +42,15 @@ def thumbnail(parser, token):
 @register.tag
 def dthumbnail(parser, token):
     return DefinedThumbnailNode(parser, token, use_strict=True)
+
+
+@safe_filter(error_output='auto')
+@register.filter
+def margin(file_, geom_string):
+    return sorl_margin(file_, geom_string)
+
+
+@safe_filter(error_output=False)
+@register.filter
+def is_portrait(file_):
+    return sorl_is_portrait(file_)
