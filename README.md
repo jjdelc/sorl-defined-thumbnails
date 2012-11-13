@@ -71,7 +71,7 @@ If you want to raise errors with this, set `SORL_DEFINED_STRICT` to `True`.
 Finding all template occurences
 -------------------------------
 
-    ./manage.py thumbnail_tags find_bad
+    ./manage.py thumbnail_tags list
 
 Will show all the occurences of the `{% thumbnail %}` tag in your templates.
 
@@ -89,8 +89,22 @@ It will print all usages of the `{% thumbnail %}` tag in your templates
 Suggest which sizes to define
 -----------------------------
 
-    ./manage.py thumbnail_tags suggest_sizes
+    ./manage.py thumbnail_tags suggest
 
 Will run a tally of all the `{% thumbnail %}` tags found in your templates and show you the occurences for each combination of geometry/options.
 
 This should help you find which sizes to create in order to make the least changes in your templates.
+
+
+Generate all thumbnails for an image
+====================================
+
+There is a command to generate a thumbnail for all defined sizes at once for your image fields:
+
+    from defined_thumbnails.tasks import generate_all_thumbs
+
+    generate_all_thumbs(my_instance.image_field)
+
+This command is inspired by `sorl.thumbnail.get_thumbnail` with the difference that it will only read the image file once to generate all thumbnails, this is pretty handy if you are using Amazon S3 to store your uploaded files.
+
+You could fire this on a Celery task and have your thumbnails be automatically generated so they don't have to be generated on page render.
