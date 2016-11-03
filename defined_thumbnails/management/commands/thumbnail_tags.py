@@ -1,9 +1,9 @@
 # coding: utf-8
+from __future__ import print_function
 
 import os
 import re
 from collections import defaultdict
-from __future__ import print_function
 
 from django.conf import settings
 from django.template.loaders import app_directories
