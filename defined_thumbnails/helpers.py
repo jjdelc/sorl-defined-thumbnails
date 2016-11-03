@@ -45,7 +45,7 @@ def is_valid_geometry_and_opts(geom, opts):
 
 def get_named_sizes():
     defined_sizes = settings.SORL_DEFINED_THUMBNAILS
-    return defined_sizes.keys()
+    return list(defined_sizes.keys())
 
 
 def size_to_str(size_tup):
