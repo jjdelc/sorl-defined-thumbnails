@@ -2,6 +2,7 @@
 
 from django.conf import settings
 
+
 def is_enabled():
     """
     Checks if the appropriate settings for pre defined thumbnails are set.
@@ -33,14 +34,12 @@ def is_valid_opts(opts):
 def options_match(opts_1, opts_2):
     return opts_1 == opts_2
 
+
 def clean_opts(opts):
     return dict([(k, str(v).strip('"')) for k, v in opts])
 
 
 def is_valid_geometry_and_opts(geom, opts):
-    geom = clean_geom(geom)
-    if geom in get_named_sizes() and not opts:
-        return True
     return is_valid_geometry(geom) and is_valid_opts(opts)
 
 

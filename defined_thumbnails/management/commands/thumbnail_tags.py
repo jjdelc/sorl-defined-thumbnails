@@ -140,7 +140,7 @@ class Command(BaseCommand):
 
         command = args[0]
 
-        if command == 'suggest':
+        if command == 'suggest_sizes':
             return self.suggest_sizes()
         elif command == 'list':
             out = find_all()

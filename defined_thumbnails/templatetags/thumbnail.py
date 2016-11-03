@@ -1,18 +1,18 @@
 # coding: utf-8
 
-from django.template import Library
-
 from sorl.thumbnail.templatetags.thumbnail import ThumbnailNode, logger, TemplateSyntaxError, safe_filter
 from sorl.thumbnail.templatetags.thumbnail import margin as sorl_margin
 from sorl.thumbnail.templatetags.thumbnail import is_portrait as sorl_is_portrait
-
 from defined_thumbnails import helpers
+
+from django.template import Library
 
 
 register = Library()
 
 USE_STRICT = helpers.use_strict()
 IS_ENABLED = helpers.is_enabled()
+
 
 class DefinedThumbnailNode(ThumbnailNode):
 
@@ -27,8 +27,8 @@ class DefinedThumbnailNode(ThumbnailNode):
             self.options = [(k, parser.compile_filter(v)) for k, v in geom_opts]
         else:
             msg = helpers.get_invalid_msg(self.geometry, self.options)
-            logger.warning(msg)
             if use_strict:
+                logger.warning(msg)
                 raise TemplateSyntaxError(msg)
 
 
@@ -47,6 +47,8 @@ def dthumbnail(parser, token):
 @safe_filter(error_output='auto')
 @register.filter
 def margin(file_, geom_string):
+    if IS_ENABLED and geom_string in helpers.get_named_sizes():
+        geom_string = helpers.clean_geom(helpers.get_geom_string(geom_string))
     return sorl_margin(file_, geom_string)
 
 
