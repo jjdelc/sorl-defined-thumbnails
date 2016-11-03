@@ -3,6 +3,7 @@
 import os
 import re
 from collections import defaultdict
+from __future__ import print_function
 
 from django.conf import settings
 from django.template.loaders import app_directories
@@ -150,9 +151,9 @@ class Command(BaseCommand):
             return self.bad_command()
 
         if not out:
-            print 'No results found'
+            print('No results found')
 
-        print u'\n'.join(out)
+        print(u'\n'.join(out))
 
     def bad_command(self):
         raise CommandError('Invalid command')
@@ -163,4 +164,4 @@ class Command(BaseCommand):
             out.append((count, tag))
 
         out.sort(key=lambda x: x[0])
-        print '\n'.join('%3d: %s' % (count, tag) for count, tag in out)
+        print('\n'.join('%3d: %s' % (count, tag) for count, tag in out))
