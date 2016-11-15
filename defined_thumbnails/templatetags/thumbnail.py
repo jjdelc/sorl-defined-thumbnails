@@ -12,6 +12,7 @@ register = Library()
 
 USE_STRICT = helpers.use_strict()
 IS_ENABLED = helpers.is_enabled()
+ALLOW_OPTIONS = helpers.allow_options()
 
 
 class DefinedThumbnailNode(ThumbnailNode):
@@ -24,7 +25,8 @@ class DefinedThumbnailNode(ThumbnailNode):
             geom_opts = helpers.get_geom_opts(geom_name)
 
             self.geometry = parser.compile_filter(geom_str)
-            self.options = [(k, parser.compile_filter(v)) for k, v in geom_opts]
+            base_options = self.options or []
+            self.options = base_options + [(k, parser.compile_filter(v)) for k, v in geom_opts]
         else:
             msg = helpers.get_invalid_msg(self.geometry, self.options)
             if use_strict:

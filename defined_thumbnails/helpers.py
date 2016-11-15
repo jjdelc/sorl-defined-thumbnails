@@ -15,6 +15,12 @@ def clean_geom(geom):
     return str(geom).strip('"').lower()
 
 
+def allow_options():
+    return getattr(settings, 'SORL_DEFINED_THUMBNAILS_ALLOW_OPTIONS', False)
+
+ALLOW_OPTIONS = allow_options()
+
+
 def is_valid_geometry(geom):
     """
     A geometry is valid if it fits within the pre defined thumbnail sizes.
@@ -32,7 +38,9 @@ def is_valid_opts(opts):
 
 
 def options_match(opts_1, opts_2):
-    return opts_1 == opts_2
+    if not ALLOW_OPTIONS:
+        return opts_1 == opts_2
+    return True
 
 
 def clean_opts(opts):
